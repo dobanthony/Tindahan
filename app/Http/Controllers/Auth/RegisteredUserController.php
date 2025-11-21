@@ -32,20 +32,29 @@ class RegisteredUserController extends Controller
     {
         $request->validate([
             'name' => 'required|string|max:255',
-            'email' => 'required|string|lowercase|email|max:255|unique:'.User::class,
+            'email' => 'required|string|email|max:255|unique:'.User::class,
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
+            'role' => 'required|string|in:customer', // only allow 'customer'
         ]);
 
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
+            'role' => $request->role, // will always be 'customer'
         ]);
 
         event(new Registered($user));
 
         Auth::login($user);
 
-        return redirect(route('dashboard', absolute: false));
+        // Redirect based on role using helper methods
+        if ($user->isAdmin()) return redirect()->route('admin.dashboard');
+        if ($user->isCustomer()) return redirect()->route('customer.dashboard');
+        if ($user->isDelivery()) return redirect()->route('delivery.dashboard');
+        if ($user->isCashier()) return redirect()->route('cashier.dashboard');
+
+        // fallback
+        return redirect()->route('customer.dashboard');
     }
 }

@@ -33,7 +33,16 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerate();
 
-        return redirect()->intended(route('dashboard', absolute: false));
+        $user = Auth::user();
+
+        // Redirect based on role using helper methods
+        if ($user->isAdmin()) return redirect()->route('admin.dashboard');
+        if ($user->isCustomer()) return redirect()->route('customer.dashboard');
+        if ($user->isDelivery()) return redirect()->route('delivery.dashboard');
+        if ($user->isCashier()) return redirect()->route('cashier.dashboard');
+
+        // fallback
+        return redirect()->route('customer.dashboard');
     }
 
     /**
@@ -44,7 +53,6 @@ class AuthenticatedSessionController extends Controller
         Auth::guard('web')->logout();
 
         $request->session()->invalidate();
-
         $request->session()->regenerateToken();
 
         return redirect('/');

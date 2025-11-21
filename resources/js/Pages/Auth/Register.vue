@@ -6,11 +6,13 @@ import PrimaryButton from '@/Components/PrimaryButton.vue';
 import TextInput from '@/Components/TextInput.vue';
 import { Head, Link, useForm } from '@inertiajs/vue3';
 
+// Add role to the form with default 'customer'
 const form = useForm({
     name: '',
     email: '',
     password: '',
     password_confirmation: '',
+    role: 'customer', // default role
 });
 
 const submit = () => {
@@ -91,6 +93,9 @@ const submit = () => {
                     :message="form.errors.password_confirmation"
                 />
             </div>
+
+            <!-- Hidden input to submit the default role -->
+            <input type="hidden" v-model="form.role" />
 
             <div class="mt-4 flex items-center justify-end">
                 <Link
