@@ -1,5 +1,5 @@
 <script setup>
-import AuthenticatedLayout from '@/Layouts/CustomerLayout.vue';
+import CustomerLayout from '@/Layouts/CustomerLayout.vue';
 import { Head, usePage } from '@inertiajs/vue3';
 
 const page = usePage();
@@ -9,7 +9,7 @@ const user = page.props.auth.user;
 <template>
     <Head title="Dashboard" />
 
-    <AuthenticatedLayout>
+    <CustomerLayout>
         <template #header>
             <h2 class="text-xl font-semibold leading-tight text-gray-800">
                 Dashboard
@@ -33,5 +33,5 @@ const user = page.props.auth.user;
                 </div>
             </div>
         </div>
-    </AuthenticatedLayout>
+    </CustomerLayout>
 </template>

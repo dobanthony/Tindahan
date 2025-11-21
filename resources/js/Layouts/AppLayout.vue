@@ -80,7 +80,7 @@
     </main>
 
     <footer class="py-4 text-center text-gray-500 text-sm">
-      © {{ year }} MyApp. All rights reserved.
+      © {{ year }} POS. All rights reserved.
     </footer>
 
   </div>
